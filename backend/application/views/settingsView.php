@@ -15,12 +15,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           </div>
         </div>
     </nav>
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
             <div class="col-md-6 p-3">
                 <h2>Zarządzaj dostępem do kamery</h2>
                 <div class="form-group">
-                    <p>Kamera</p>
+                    <h4>Kamera</h4>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="cam_status" id="cam_on" value="1">
                         <label class="form-check-label" for="cam_on">Włączona</label>
@@ -31,7 +31,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                       </div>
                 </div>
                 <div class="form-group mt-5">
-                    <p>Godziny aktywnej pracy kamery</p>
+                    <h4>Godziny aktywnej pracy kamery</h4>
                     <div class="form-group col-sm-4">
                         <div class='input-group date'>
                            <input type='time' class="form-control" />
@@ -46,6 +46,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                      </div>
                 </div>
                 <button class="btn btn-primary mt-3">Zatwierdź zmiany</button>
+            </div>
+            <div class="col-md-6 p-3">
+                <h2>Zarządzaj swoim kontem</h2>
+                <div class="form-group">
+                    <h4>Zmiana hasła</h4>
+                    <form method="post" action="<?=base_url()?>login/verifyLogin">
+                                    <div class="mb-3">
+                                      <label for="Login" class="form-label">Aktualne hasło</label>
+                                      <input name="login" type="text" class="form-control" id="Login">
+                                    </div>
+                                    <div class="mb-3">
+                                      <label for="Password" class="form-label">Nowe hasło</label>
+                                      <input name="pass" type="password" class="form-control" id="Password">
+                                    </div>
+                                    <div class="mb-3">
+                                      <label for="Password" class="form-label">Potwierdź nowe hasło</label>
+                                      <input name="pass" type="password" class="form-control" id="Password">
+                                    </div>
+                                    <button class="btn btn-primary mt-3">Zatwierdź zmiany</button>
+                                  </form>
+                                  
+                </div>
+                
             </div>
         </div>
     </div>

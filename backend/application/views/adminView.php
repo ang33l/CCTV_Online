@@ -16,7 +16,7 @@ $camera_status = false;
           </div>
         </div>
     </nav>
-<div class="container-fluid">
+<div class="container">
         <div class="row">
             <div class="col-md-6">
                 <div class="m-3" style="height: 30rem; width: 40rem; background-color:gray;">
