@@ -28,6 +28,13 @@ $camera_status = false;
                                       <label for="Password" class="form-label">Hasło</label>
                                       <input name="pass" type="password" class="form-control" id="Password">
                                     </div>
+                                    <?php if(isset($id)){
+
+                                    ?>
+                                    <div class="mb-3">
+                                    <span class="text-danger">Nieprawidłowy login lub hasło!</span>
+                                    </div>
+                                    <?php } ?>
                                     <button type="submit" class="btn btn-primary" id="submitbtn">Zaloguj się</button>
                                   </form>
                             </div>
