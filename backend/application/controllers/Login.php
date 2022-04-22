@@ -7,6 +7,7 @@ class Login extends CI_Controller {
         if(isset($this->session->loggedIn)){
             if($this->session->loggedIn){
                 header("Location: ".base_url().'admin');
+                die();
             }
         }
         
@@ -34,21 +35,30 @@ class Login extends CI_Controller {
                             'user_name' => $row->user_name
                         ));
                         //return $this->output->set_content_type('application/json')->set_status_header(200)->set_output(json_encode(array('errno' => true,)));
-                        header("Location: ".base_url().'admin');
+                        //header("Location: ".base_url().'admin');
+                        echo "1";
+                        die();
                     }else {
-                        header("Location: ".base_url()."login/index/1");
+                        echo "0";
+                        die();
+                        //header("Location: ".base_url()."login/index/1");
                     }
                 }
             } else {
-                header("Location: ".base_url()."login/index/1");
+                echo "0";
+            die();
+                //header("Location: ".base_url()."login/index/1");
             }
         }else{
-            header("Location: ".base_url()."login/index/1");
+            //header("Location: ".base_url()."login/index/1");
+            echo "0";
+            die();
         }
     }
     public function logout()
     {
         $this->session->sess_destroy();
         header("Location: ".base_url());
+        die();
     }
 }

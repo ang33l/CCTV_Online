@@ -19,22 +19,20 @@ $camera_status = false;
                                 <h1 class="text-dark">Logowanie</h1>
                             </div>
                             <div class="col-xs-12">
-                                <form method="post" action="<?=base_url()?>login/verifyLogin">
+                                <form action="javascript:myFunction()">
                                     <div class="mb-3">
                                       <label for="Login" class="form-label">Login</label>
-                                      <input name="login" type="text" class="form-control" id="Login">
+                                      <input name="login" type="text" class="form-control formVal" id="Login" required>
                                     </div>
                                     <div class="mb-3">
                                       <label for="Password" class="form-label">Hasło</label>
-                                      <input name="pass" type="password" class="form-control" id="Password">
+                                      <input name="pass" type="password" class="form-control formVal" id="Password" required>
                                     </div>
-                                    <?php if(isset($id)){
-
-                                    ?>
-                                    <div class="mb-3">
+                                    
+                                    <div class="mb-3" id="error-window" style="display:none">
                                     <span class="text-danger">Nieprawidłowy login lub hasło!</span>
                                     </div>
-                                    <?php } ?>
+                                    
                                     <button type="submit" class="btn btn-primary" id="submitbtn">Zaloguj się</button>
                                   </form>
                             </div>
@@ -42,3 +40,29 @@ $camera_status = false;
                     </div>
                 </div>
             </div>
+<script>
+function myFunction()
+{
+    var elements = document.getElementsByClassName("formVal");
+    var formData = new FormData(); 
+    for(var i=0; i<elements.length; i++)
+    {
+        formData.append(elements[i].name, elements[i].value);
+    }
+    var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function()
+        {
+            if(xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            {
+                if(xmlHttp.responseText == "1"){
+                    console.log(xmlHttp.responseText);
+                    window.location.replace("<?= base_url() ?>admin");
+                }else{
+                    document.getElementById("error-window").style.display = "";
+                }
+            }
+        }
+        xmlHttp.open("post", "<?= base_url() ?>login/verifyLogin"); 
+        xmlHttp.send(formData); 
+}
+</script>

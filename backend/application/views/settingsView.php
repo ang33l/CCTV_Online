@@ -21,49 +21,54 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <h2>Zarządzaj dostępem do kamery</h2>
                 <div class="form-group">
                     <h4>Kamera</h4>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="cam_status" id="cam_on" value="1">
-                        <label class="form-check-label" for="cam_on">Włączona</label>
-                      </div>
+                    <form action="javascript:changeCameraState()">
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="cam_status" id="cam_off" value="0" checked>
-                        <label class="form-check-label" for="cam_off">Wyłączona</label>
-                      </div>
+                          <input class="form-check-input" type="radio" name="cam_status" id="cam_on" value="1">
+                          <label class="form-check-label" for="cam_on">Włączona</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="cam_status" id="cam_off" value="0" checked>
+                          <label class="form-check-label" for="cam_off">Wyłączona</label>
+                        </div>
+                      </form>
                 </div>
                 <div class="form-group mt-5">
-                    <h4>Godziny aktywnej pracy kamery</h4>
-                    <div class="form-group col-sm-4">
+                  <h4>Godziny aktywnej pracy kamery</h4>
+                    <form action="javascript:activeHours()">
+                      <div class="form-group col-sm-4">
                         <div class='input-group date'>
-                           <input type='time' class="form-control" />
-                           <input type='time' class="form-control" />
+                          <input type='time' class="form-control" />
+                          <input type='time' class="form-control" />
                         </div>
                         <div class='input-group date' id='datetimepicker3'>
-                            
-                            <span class="input-group-addon">
+                          <span class="input-group-addon">
                             <span class="glyphicon glyphicon-time"></span>
-                            </span>
-                         </div>
-                     </div>
+                          </span>
+                        </div>
+                      </div>
+                      <button class="btn btn-primary mt-3">Zatwierdź zmiany</button>
+                    </form>
                 </div>
-                <button class="btn btn-primary mt-3">Zatwierdź zmiany</button>
+                
             </div>
             <div class="col-md-6 p-3">
                 <h2>Zarządzaj swoim kontem</h2>
                 <div class="form-group">
                     <h4>Zmiana hasła</h4>
-                    <form method="post" action="<?=base_url()?>login/verifyLogin">
+                    <form action="javascript:changePassword()">
                                     <div class="mb-3">
-                                      <label for="Login" class="form-label">Aktualne hasło</label>
-                                      <input name="login" type="text" class="form-control" id="Login">
+                                      <label for="pass" class="form-label">Aktualne hasło</label>
+                                      <input name="pass" type="password" class="form-control passVal" id="pass">
                                     </div>
                                     <div class="mb-3">
-                                      <label for="Password" class="form-label">Nowe hasło</label>
-                                      <input name="pass" type="password" class="form-control" id="Password">
+                                      <label for="newPass" class="form-label">Nowe hasło</label>
+                                      <input name="newPass" type="password" class="form-control passVal" id="newPass">
                                     </div>
                                     <div class="mb-3">
-                                      <label for="Password" class="form-label">Potwierdź nowe hasło</label>
-                                      <input name="pass" type="password" class="form-control" id="Password">
+                                      <label for="rePass" class="form-label">Potwierdź nowe hasło</label>
+                                      <input name="rePass" type="password" class="form-control passVal" id="rePass">
                                     </div>
+                                    <div id="error-window" style="display: none"></div>
                                     <button class="btn btn-primary mt-3">Zatwierdź zmiany</button>
                                   </form>
                                   
@@ -72,3 +77,53 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
         </div>
     </div>
+    <script>
+function changePassword()
+{
+    var elements = document.getElementsByClassName("passVal");
+    var formData = new FormData(); 
+    for(var i=0; i<elements.length; i++)
+    {
+        formData.append(elements[i].name, elements[i].value);
+    }
+    console.log(elements[1].value);
+    var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function()
+        {
+            if(xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            {
+                if(xmlHttp.responseText == "1"){
+                    console.log(xmlHttp.responseText);
+                    //window.location.replace("<= base_url() ?>admin");
+                    document.getElementById("error-window").style.display = "";
+                    document.getElementById("error-window").innerHTML = '<span class="text-success">Hasło zostało zmienione pomyślnie!</span>';
+                    for(var i=0; i<elements.length; i++){
+                      elements[i].value = "";
+                    }
+                }else if(xmlHttp.responseText == "-1"){
+                  console.log(xmlHttp.responseText);
+                    document.getElementById("error-window").style.display = "";
+                    document.getElementById("error-window").innerHTML = '<span class="text-warning">Nowe hasło nie może być takie samo jak aktualne.</span>';
+                }
+                else if(xmlHttp.responseText == "-2" || xmlHttp.responseText == "-3"){
+                  console.log(xmlHttp.responseText);
+                    document.getElementById("error-window").style.display = "";
+                    document.getElementById("error-window").innerHTML = '<span class="text-danger">Podane hasło jest niepoprawne!</span>';
+                }
+
+            }
+        }
+        xmlHttp.open("post", "<?= base_url() ?>admin/changePassword"); 
+        xmlHttp.send(formData); 
+}
+
+function changeCameraState()
+{
+
+}
+
+function activeHours()
+{
+
+}
+</script>
