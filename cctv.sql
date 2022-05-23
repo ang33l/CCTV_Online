@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 09 Kwi 2022, 18:06
+-- Czas generowania: 23 Maj 2022, 15:08
 -- Wersja serwera: 10.4.22-MariaDB
 -- Wersja PHP: 8.1.2
 
@@ -30,15 +30,18 @@ SET time_zone = "+00:00";
 CREATE TABLE `active_hours` (
   `ah_id` int(11) NOT NULL,
   `ah_from` time NOT NULL,
-  `ah_to` time NOT NULL
+  `ah_to` time NOT NULL,
+  `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Zrzut danych tabeli `active_hours`
 --
 
-INSERT INTO `active_hours` (`ah_id`, `ah_from`, `ah_to`) VALUES
-(1, '19:06:30', '23:06:30');
+INSERT INTO `active_hours` (`ah_id`, `ah_from`, `ah_to`, `user_id`) VALUES
+(2, '18:44:00', '16:32:00', 1),
+(3, '12:33:00', '03:32:00', 0),
+(4, '23:41:00', '23:51:00', 2);
 
 -- --------------------------------------------------------
 
@@ -57,7 +60,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `user_name`, `user_pass`) VALUES
-(1, 'admin', '$2y$10$ijGlR6kkxOwkqkcOfG/gJuZRKFZbolvO6k3yNqlkx4P29jAJgTPm.');
+(1, 'admin', '$2y$10$FGM6TuPLYsc41z99NdRy1esIZPGINn./DUe69HKpU0tYYBDEwvHV6'),
+(2, 'ziomek', '123'),
+(3, 'kozak', '123');
 
 --
 -- Indeksy dla zrzutów tabel
@@ -83,13 +88,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT dla tabeli `active_hours`
 --
 ALTER TABLE `active_hours`
-  MODIFY `ah_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ah_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT dla tabeli `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -28,8 +28,19 @@ class Admin extends CI_Controller {
 				die();
 			}
 		}
+		$data['users'] = array();
+		$sql =  'SELECT user_id, user_name FROM user;';
+		$query = $this->db->query($sql);
+		if($query->result()){
+			foreach($query->result() as $row){
+				array_push($data['users'], array(
+					'user_name' => $row->user_name,
+					'user_id' => $row->user_id
+				));
+			}
+		}
 		$this->load->view('headerView');
-		$this->load->view('settingsView');
+		$this->load->view('settingsView', $data);
         $this->load->view('footerView');
 	}
 	public function changePassword()
@@ -83,8 +94,24 @@ class Admin extends CI_Controller {
 
 	}
 
-	public function activeHours()
+	public function changeActiveHours()
 	{
-		
+		$user = $this->input->post('user');
+		$from = $this->input->post('from');
+		$to = $this->input->post('to');
+
+		$sql = "SELECT * FROM active_hours WHERE user_id=?";
+		$query = $this->db->query($sql, array($user));
+		if($query->result()){
+			$sql = "UPDATE active_hours SET ah_from=?, ah_to=? WHERE user_id=?;";
+			$query = $this->db->query($sql, array($from, $to, $user));
+			echo "1";
+			die();
+		} else{
+			$sql = "INSERT INTO active_hours(ah_from, ah_to, user_id) VALUES (?, ?,?);";
+			$query = $this->db->query($sql, array($from, $to, $user));
+			echo "1";
+			die();
+		}
 	}
 }
