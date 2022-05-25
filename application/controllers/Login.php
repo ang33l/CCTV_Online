@@ -4,6 +4,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Login extends CI_Controller {
 	public function index($id = 0)
 	{
+        if(!exec("sudo screen -ls | grep camera")){
+			$data['camera_status'] = false;
+		} else {
+			$data['camera_status'] = true;
+		}
         if(isset($this->session->loggedIn)){
             if($this->session->loggedIn){
                 header("Location: ".base_url().'admin');
@@ -12,12 +17,8 @@ class Login extends CI_Controller {
         }
         
         $this->load->view('headerView');
-        if($id){
-            $data = array('id' => $id);
-            $this->load->view('loginView', $data);    
-        }else{
-            $this->load->view('loginView');
-        }
+        
+        $this->load->view('loginView', $data);
 		
         $this->load->view('footerView');
 	}

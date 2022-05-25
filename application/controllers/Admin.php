@@ -13,8 +13,32 @@ class Admin extends CI_Controller {
 				die();
 			}
 		}
+		$user = $this->session->user_id;
+		
+		$query = $this->db->query("SELECT ah_from, ah_to FROM active_hours WHERE user_id=?", array($user));
+		foreach($query->result() as $row){
+			$from = $row->ah_from;
+			$to = $row->ah_to;
+		}
+		if(date("H:i:s") > $from && date("H:i:s") < $to){
+			$data['camera_access'] = true;
+		}else{
+			$data['camera_access'] = false;
+		}
+		if(!exec("sudo screen -ls | grep camera")){
+			$data['camera_status'] = false;
+		} else {
+			$data['camera_status'] = true;
+		}
+		if(!$data['camera_status'] && $data['camera_access']){
+			exec("sudo screen -AdmS camera python3 camera.py");
+			$data['camera_status'] = true;
+			sleep(1);
+		}else if($data['camera_status'] && !$data['camera_access']){
+			$data['camera_status'] = false;
+		}
 		$this->load->view('headerView');
-		$this->load->view('adminView');
+		$this->load->view('adminView', $data);
         $this->load->view('footerView');
 	}
     public function settings()
@@ -28,6 +52,13 @@ class Admin extends CI_Controller {
 				die();
 			}
 		}
+
+		if(!exec("sudo screen -ls | grep camera")){
+			$data['camera_status'] = false;
+		} else {
+			$data['camera_status'] = true;
+		}
+		$data['user'] = $this->session->user_name;
 		$data['users'] = array();
 		$sql =  'SELECT user_id, user_name FROM user;';
 		$query = $this->db->query($sql);
@@ -42,6 +73,24 @@ class Admin extends CI_Controller {
 		$this->load->view('headerView');
 		$this->load->view('settingsView', $data);
         $this->load->view('footerView');
+	}
+	public function changeCameraState()
+	{
+		if(!isset($this->session->loggedIn)){
+            header("Location: ".base_url());
+			die();
+        } else {
+			if(!$this->session->loggedIn){
+				header("Location: ".base_url());
+				die();
+			}
+		}
+		if(!exec("sudo screen -ls | grep camera")){
+			exec("sudo screen -AdmS camera python3 camera.py");
+		} else {
+			exec("sudo screen -X -S camera quit");
+		}
+		header("Location: ".base_url()."admin/settings");
 	}
 	public function changePassword()
 	{
@@ -89,10 +138,7 @@ class Admin extends CI_Controller {
 		
 	}
 
-	public function changeCameraState()
-	{
 
-	}
 
 	public function changeActiveHours()
 	{

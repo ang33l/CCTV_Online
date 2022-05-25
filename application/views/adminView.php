@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-$camera_status = false;
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#"></a>
@@ -19,8 +18,12 @@ $camera_status = false;
 <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <div class="m-3" style="height: 30rem; width: 40rem; background-color:gray;">
-                    <h1>obraz kamery</h1>
+                <div class="m-3">
+                  <?php 
+                  if(!$camera_status) 
+                    echo '<h5>Nie można wyświetlić kamery, ponieważ jest wyłączona!</h5>'; 
+                  else 
+                    echo ' <img src="http://192.168.1.38:8000/stream.mjpg" width="640" height="480">'; ?>
                 </div>
             </div>
             <div class="col-md-6 p-3">

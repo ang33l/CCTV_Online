@@ -21,17 +21,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="col-md-6 p-3">
             <h2>Zarządzaj dostępem do kamery</h2>
             <div class="form-group">
-                <!--<h4>Kamera</h4>
-                <form action="javascript:changeCameraState()">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="cam_status" id="cam_on" value="1">
-                        <label class="form-check-label" for="cam_on">Włączona</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="cam_status" id="cam_off" value="0" checked>
-                        <label class="form-check-label" for="cam_off">Wyłączona</label>
-                    </div>
-                </form>-->
+                <h5>Kamera: <?php 
+                if(!$camera_status) {
+                    echo '<span class="text-danger">wyłączona</span><br>'; 
+                    echo '<a href="'.base_url().'admin/changeCameraState" class="btn btn-success">Włącz</a>';
+                }
+                else {
+                    echo '<span class="text-success">włączona</span><br>'; 
+                    echo '<a href="'.base_url().'admin/changeCameraState" class="btn btn-danger">Wyłącz</a>';
+                }
+                
+                ?></h5>
+                <?php if($user == "admin"){
+
+                ?>
                 <form action="javascript:activeHours()">
                     <div>
                         <h5>Wybierz użytkownika, któremu zostaną zmienione uprawnienia do kamery</h5>
@@ -58,6 +61,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <div id="error-window2" style="display: none"></div>
                     <button class="btn btn-primary mt-3">Zatwierdź zmiany</button>
                 </form>
+                <?php } else echo "<h4>Brak uprawnień, zaloguj się na konto admina w celu zmian ustawień</h4>";?>
             </div>
 
         </div>

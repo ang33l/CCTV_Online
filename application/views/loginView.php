@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-$camera_status = false;
 ?><div class="container-fluid">
                 <div class="row">
                     <div class="col-md-6 vh-100 bg-dark d-flex align-items-center">
